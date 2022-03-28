@@ -1,0 +1,166 @@
+<style>
+  .logo-bar-section {
+    max-width: {{ section.settings.logo_width }};
+    display: inline-block;
+    margin: 0 27.5px 35px;
+    text-align: center;
+  }
+  
+  .logo-list {
+    color: {{ section.settings.text_color }};
+    font-weight: 500;
+  }
+  
+  .logo-list {
+    background: {{ section.settings.background_color }};
+  }
+
+  .logo_heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    font-family: inherit;
+    font-weight: bold;
+}
+  
+.logo-list-main {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+  
+.Paragraph {
+    margin-top: 5px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    line-height: 1.1;
+}
+  
+</style>
+<div id="section-{{ section.id }}" class="logo-list">
+  <h2 class="logo_heading">{{ section.settings.title | escape }}</h2>
+  {% if section.blocks.size > 0 %}
+    <ul class="logo-list-main">
+      {% for block in section.blocks %}
+        <li class="logo-bar-section" {{ block.shopify_attributes }}>
+          {% if block.settings.link != blank %}
+            <a href="{{ block.settings.link }}">
+          {% endif %}
+          {% if block.settings.image != blank %}
+            {{ block.settings.image | img_url: '150x150', scale: 2 | img_tag: block.settings.image.alt, 'logo-bar__image' }}
+              <div><p class="Paragraph">{{ block.settings.text }}</p></div>
+
+              {% else %}
+            {{ 'logo' | placeholder_svg_tag: 'placeholder-svg' }}
+          {% endif %}
+          {% if block.settings.link != blank %}
+              
+            </a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</div>
+{% schema %}
+  {
+    "name": "Logo list",
+    "class": "index-section",
+    "max_blocks": 10,
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Logo list"       
+      },
+	  {
+        "type": "select",
+        "id": "logo_width",
+        "label": "Logo width",
+        "default": "150px",
+        "options": [
+          {
+            "label": "Extra Small",
+            "value": "100px"
+          },
+          {
+            "label": "Small",
+            "value": "125px"
+          },
+          {
+            "label": "Medium",
+            "value": "150px"
+          },
+          {
+            "label": "Large",
+            "value": "175px"
+          },
+          {
+            "label": "Extra Large",              
+            "value": "200px"
+          }
+        ]
+      },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+   {
+      "type": "color",
+      "id": "background_color",
+      "label": "background Color",
+      "default": "#ffffff"
+    }
+
+    ],
+    "blocks": [
+      {
+        "type": "logo_image",
+        "name": "Logo",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link",
+            "info": "Optional"
+          },
+          {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Write your text here"
+       }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Logo list",
+        "category": "Image",
+        "blocks": [
+          {
+            "type": "logo_image"
+          },
+          {
+            "type": "logo_image"
+          },
+          {
+            "type": "logo_image"
+          },
+          {
+            "type": "logo_image"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
